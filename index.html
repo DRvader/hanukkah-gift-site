@@ -1,26 +1,44 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <link rel="stylesheet" href="index.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/99/three.min.js"></script>
+<script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
+<script type="text/javascript" src="present_size_two_renderers.js"></script>
 
 <head>
+    <meta charset="utf-8"/>
     <title>Happy Hankukah</title>
-    <style> #threejs canvas{width: 100%; height: 100%} </style>
 </head>
 <body>
     <div class="header">
         <h2>Happy Hankukah</h2>
     </div>
 
-    <div class="card">
-        <p>An approximation of the present opening experience that you will have in a couple of days.</p>
-
-        <p>So without further ado, this is the best music on our radar that you didn't introduce to us.<br>Love, Nancy and Daniel</p>
+    <div class="footer">
+        <p>This website is an approximation of the present opening experience that you will have in a couple of days.</p>
     </div>
 
-    <div id='threejs'/>
+    <div class="card">
+        <p>So without further ado, this is the best music on our radar that you didn't introduce to us.</p>
+    </div>
 
-    <!-- https://cdnjs.cloudflare.com/ajax/libs/three.js/99/three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/99/three.min.js"></script>
-    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/loaders/GLTFLoader.js"></script>
-    <script type="text/javascript", src="present_size.js"></script>
+    <div class='threejs' id='africans'></div>
+
+    <script type="text/javascript">
+        initPresent('africans', 'white', 'hollywood_africans.png');
+    </script>
+
+    <div class="card">
+        <p>And a little something so the cats don't feel left out.</p>
+    </div>
+
+    <div class='threejs' id='cat'></div>
+    <script type="text/javascript">
+        initPresent('cat', 'yellow', 'cat_toy.png');
+    </script>
+
+    <br>Love,<br>Nancy and Daniel
+
 </body>
 </html>

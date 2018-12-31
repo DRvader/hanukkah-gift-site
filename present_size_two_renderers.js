@@ -1,44 +1,31 @@
-var renderer = null;
-
-var scenes = [];
 var clock = new THREE.Clock();
 
-// // var width = 800;
-// var height = 500;
-
-function init() {
-    // var canvas = document.body.appendChild(document.createElement('c'));
-    var canvas = document.getElementById('c');
-    renderer = new THREE.WebGLRenderer({canvas: canvas, alpha: true, antialias: true});
-
-    render();
-}
-
 function initPresent(element, present_colour, gift_image) {
+    var scene = new THREE.Scene();
     var width = window.innerWidth;
     var height = window.innerHeight;
 
-    var container = document.getElementById(element)
-    var canvas = document.createElement('canvas')
-    canvas.width = width;
-    canvas.height = height;
-    container.appendChild(canvas);
-
-    var scene = new THREE.Scene();
     scene.userData.animate = false;
-    scene.userData.view = container;
+
+    var renderer = new THREE.WebGLRenderer({alpha: true, antialias: true});
+
+    renderer.setSize(width, height);
+
+    var container = document.getElementById(element)
 
     function onMouseDown(e) {
         scene.userData.animate = true;
     }
 
     container.addEventListener('mousedown', onMouseDown, false);
+    scene.userData.view = container;
+
     // scene.background = new THREE.Color(0xffffff);
     // scene.background = new THREE.Color(0x0);
 
     var camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
 
-    // container.appendChild(renderer.domElement);
+    container.appendChild(renderer.domElement);
 
     var ambientLight = new THREE.AmbientLight(present_colour);
     scene.add(ambientLight);
@@ -62,7 +49,7 @@ function initPresent(element, present_colour, gift_image) {
 
     loadScene(scene);
 
-    scenes.push(scene)
+    renderWrapper(renderer, scene)();
 }
 
 function loadScene(scene) {
@@ -87,26 +74,9 @@ function loadScene(scene) {
         });
 }
 
-function render() {
-    requestAnimationFrame(render);
-
-    scenes.forEach( function ( scene ) {
-        var rect = scene.userData.view.getBoundingClientRect();
-
-        if (rect.bottom < 0 || rect.top > renderer.domElement.clientHeight ||
-            rect.right < 0 || rect.left > renderer.domElement.clientWidth ) {
-            return; // it's off screen
-
-        }
-        // set the viewport
-        var width = rect.right - rect.left;
-        var height = rect.bottom - rect.top;
-        var left = rect.left;
-        var top = rect.top;
-
-        renderer.setViewport( left, top, width, height );
-        renderer.setScissor( left, top, width, height );
-
+function renderWrapper(renderer, scene) {
+    return function render() {
+        requestAnimationFrame(render);
         if(scene.userData.animate) {
             var delta = clock.getDelta();
             if (scene.userData.mixer != null) {
@@ -118,7 +88,5 @@ function render() {
         }
 
         renderer.render(scene, scene.userData.camera);
-    });
+    }
 }
-
-init();
